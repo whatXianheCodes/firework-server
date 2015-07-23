@@ -1,10 +1,10 @@
 /**
- * @author Xianhe Huang
+ * @author xianhehuang@gmail.com
  */
 public class Player {
-    final int id;
+  final int id;
 
-    public Player(int id) {
-        this.id = id;
-    }
+  public Player(int id) {
+    this.id = id;
+  }
 }
