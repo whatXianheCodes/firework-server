@@ -1,15 +1,25 @@
+<!DOCTYPE html>
 <html>
 <head>
-  <title>File Upload with Servlet 3.0</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      $("button").click(function(){
+        $.post("/start",
+                {
+                  name: "Donald Duck",
+                  city: "Duckburg"
+                },
+                function(data,status){
+                  alert("Data: " + data + "\nStatus: " + status);
+                });
+      });
+    });
+  </script>
 </head>
 <body>
-<form action="/draw_card" method="post">
-  First name:<br>
-  <input type="text" name="firstname">
-  <br>
-  Last name:<br>
-  <input type="text" name="lastname">
-  <input type="submit" value="Submit">
-</form>
+
+<button>Send an HTTP POST request to a page and get the result back</button>
+
 </body>
 </html>

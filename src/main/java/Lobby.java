@@ -9,11 +9,11 @@ import java.util.UUID;
  * @author xianhehuang@gmail.com
  */
 public class Lobby {
-  private static Map<UUID, Table> lobbyTable = Maps.newHashMap();
+  private static Map<UUID, TableHelper> lobbyTable = Maps.newHashMap();
 
   public static String addTable(Player currentPlayer) {
     UUID name = UUID.randomUUID();
-    lobbyTable.put(name, new Table(currentPlayer));
+    lobbyTable.put(name, new TableHelper(currentPlayer));
     return name.toString();
   }
 
@@ -29,7 +29,7 @@ public class Lobby {
 
   // TODO: better way to find for a match
   public static String findMatch(Player currentPlayer) {
-    for (Map.Entry<UUID, Table> tableEntry : lobbyTable.entrySet()) {
+    for (Map.Entry<UUID, TableHelper> tableEntry : lobbyTable.entrySet()) {
       if (tableEntry.getValue().isAvailable()) {
         return tableEntry.getKey().toString();
       }
