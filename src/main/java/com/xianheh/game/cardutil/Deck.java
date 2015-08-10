@@ -1,5 +1,7 @@
+package com.xianheh.game.cardutil;
+
+import com.xianheh.game.util.MersenneTwisterFast;
 import com.google.common.collect.Lists;
-import util.MersenneTwisterFast;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -19,10 +21,10 @@ public class Deck {
 
   private void createDeck () {
     for (int duplicateRef = 0; duplicateRef < 2; duplicateRef ++) {
-      for (int cardValueRef = 0; cardValueRef < Card.CardValue.values().length; cardValueRef++) {
+      for (int cardValueRef = 1; cardValueRef <= 5; cardValueRef++) {
         for (int cardColorRef = 0; cardColorRef < Card.CardColor.values().length; cardColorRef++) {
-          Card card = new Card(Card.CardValue.values()[cardValueRef], Card.CardColor.values()[cardColorRef],
-              calculateId(duplicateRef, cardValueRef, cardColorRef));
+          Card card = new Card(cardValueRef, Card.CardColor.values()[cardColorRef],
+              calculateId(duplicateRef, (cardValueRef - 1), cardColorRef));
           LOGGER.info("card id" + card.getCardId());
           deck.add(card);
         }
@@ -31,7 +33,7 @@ public class Deck {
   }
 
   public int calculateId(int duplicateRef, int cardValueRef, int cardColorRef) {
-    return (duplicateRef *  Card.CardValue.values().length * Card.CardColor.values().length) + ((cardValueRef *
+    return (duplicateRef *  5 * Card.CardColor.values().length) + ((cardValueRef *
         Card.CardColor.values().length) + cardColorRef);
   }
 

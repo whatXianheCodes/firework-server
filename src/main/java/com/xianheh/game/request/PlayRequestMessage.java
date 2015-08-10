@@ -1,9 +1,12 @@
+package com.xianheh.game.request;
+
 import com.google.gson.annotations.SerializedName;
+import com.xianheh.game.cardutil.Card;
 
 /**
  * @author xianhehuang@gmail.com
  */
-public class PlayRequest {
+public class PlayRequestMessage {
   private String action;
   @SerializedName("player_id")
   private String playerId;

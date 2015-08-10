@@ -1,4 +1,4 @@
-package util;
+package com.xianheh.game.util;
 
 import java.io.*;
 import java.util.*;

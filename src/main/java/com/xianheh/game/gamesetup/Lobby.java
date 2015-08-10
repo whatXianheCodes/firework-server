@@ -1,3 +1,5 @@
+package com.xianheh.game.gamesetup;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 

@@ -1,4 +1,7 @@
+package com.xianheh.game.response;
+
 import com.google.gson.annotations.SerializedName;
+import com.xianheh.game.cardutil.Hand;
 
 /**
  * @author xianhehuang@gmail.com
@@ -17,16 +20,21 @@ public class PlayResponse {
   private Hand[] hands;
   private int turn;
 
-  public PlayResponse(String action, boolean success, String errorMessage, int playerId, int hintsLeft, int livesLeft,
+  public PlayResponse(String action, int playerId, int hintsLeft, int livesLeft,
       Hand[] hands, int turn) {
     this.action = action;
-    this.success = success;
-    this.errorMessage = errorMessage;
+    success = true;
+    errorMessage = "";
     this.playerId = playerId;
     this.hintsLeft = hintsLeft;
     this.livesLeft = livesLeft;
     this.hands = hands;
     this.turn = turn;
+  }
+
+  public PlayResponse(boolean success, String errorMessage) {
+    this.success = success;
+    this.errorMessage = errorMessage;
   }
 
   public String getAction() {

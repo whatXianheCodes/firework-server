@@ -1,3 +1,5 @@
+package com.xianheh.game.cardutil;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.logging.Logger;

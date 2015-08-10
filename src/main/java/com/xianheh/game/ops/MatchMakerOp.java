@@ -1,3 +1,8 @@
+package com.xianheh.game.ops;
+
+import com.xianheh.game.gamesetup.Player;
+import com.xianheh.game.gamesetup.Lobby;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.logging.Logger;

@@ -1,3 +1,5 @@
+package com.xianheh.game.gamesetup;
+
 /**
  * @author xianhehuang@gmail.com
  */
