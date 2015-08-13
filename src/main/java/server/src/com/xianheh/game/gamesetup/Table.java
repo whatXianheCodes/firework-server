@@ -6,9 +6,11 @@ import com.xianheh.game.cardutil.Card.CardColor;
 import com.xianheh.game.cardutil.Deck;
 import com.xianheh.game.cardutil.Hand;
 import com.xianheh.game.exception.PlayException;
+import com.xianheh.game.request.PlayRequestMessage;
 import com.xianheh.game.response.ResponseCode;
 import com.xianheh.game.setting.GameConfigurable;
 
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -27,6 +29,8 @@ public class Table {
   private int playerID;
   private int turn;
   private int turnsLeft;
+  private List<PlayRequestMessage> moves;
+  int moveId;
 
   public Table () {
     turn = 0;
@@ -43,11 +47,11 @@ public class Table {
       LOGGER.info(playerRef + "th player");
       hands[playerRef].printHand();
     }
-    LOGGER.info(deck.getDeckSize() + "cards left");
+    LOGGER.info(deck.getSize() + "cards left");
   }
 
-  public Hand[] getHands() {
-    return hands;
+  public Hand getHand(int playerId) {
+    return hands[playerId];
   }
 
   public Map<Card.CardColor, Card> getTable() {
@@ -101,11 +105,16 @@ public class Table {
     return turn;
   }
 
-  public void incrementTurn() {
-    turn++;
+  public void addMove(PlayRequestMessage playRequestMessage) {
+    moves.add(playRequestMessage);
+  }
+
+  public PlayRequestMessage[] getMove(int index) {
+    return moves.subList(index, moves.size()-1).toArray(new PlayRequestMessage[moves.size() - index]);
   }
 
   public void advanceTurn() {
+    moveId++;
     turn = (turn + 1) % GameConfigurable.MAX_PLAYERS;
     if (lives == 0) {
       if (turnsLeft == 0) {

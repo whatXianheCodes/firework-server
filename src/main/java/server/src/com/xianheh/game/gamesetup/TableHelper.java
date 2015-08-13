@@ -2,7 +2,6 @@ package com.xianheh.game.gamesetup;
 
 import com.google.common.collect.Lists;
 import com.xianheh.game.cardutil.Deck;
-import com.xianheh.game.gamesetup.Player;
 
 import java.util.List;
 

@@ -11,32 +11,47 @@ import com.xianheh.game.response.ResponseCode.ErrorResponse;
 import com.xianheh.game.setting.GameConfigurable;
 
 /**
- * @author xianhe@index.com
+ * @author xianhehuang@gmail.com
  */
 public class PlayRequest {
 
-  public static PlayResponse parseJSONMessage(String message, Table table) throws PlayException {
+  public static String parseJSONMessage(String message, Table table) throws PlayException {
     Gson gson = new Gson();
     PlayRequestMessage request = gson.fromJson(message, PlayRequestMessage.class);
+    PlayResponse response;
 
     switch(request.getAction()) {
       case Action.GET_HAND:
-        return startGame(checkPlayerId(request.getPlayerId()), table);
+        response = getHand(checkPlayerId(request.getPlayerId()), table);
+        break;
       case Action.GET_ID:
-        return returnId(table);
-//      case GIVE_HINT:
-//        giveHint();
-//        break;
+        response = returnId(table);
+        break;
+      case Action.GIVE_HINT:
+        table.addMove(request);
+        response = giveHint(table, checkPlayerId(request.getPlayerId()), request.getHintColor(),
+            request.getHintNumber());
+        break;
       case Action.PLAY:
-        return playCard(checkPlayerId(request.getPlayerId()), request.getCardPlayed(), table);
+        table.addMove(request);
+        response = playCard(checkPlayerId(request.getPlayerId()), request.getCardPlayed(), table);
+        break;
       case Action.DISCARD:
-        return discardCard(checkPlayerId(request.getPlayerId()), request.getCardPlayed(), table);
+        table.addMove(request);
+        response = discardCard(checkPlayerId(request.getPlayerId()), request.getCardPlayed(), table);
+        break;
+      case Action.GET_MOVE_SINCE:
+        if (Strings.isNullOrEmpty(request.getMove())) {
+          throw new PlayException(ErrorResponse.INVALID_REQUEST);
+        }
+        return gson.toJson(table.getMove(Integer.parseInt(request.getMove())));
       default:
         throw new PlayException(ErrorResponse.INVALID_REQUEST);
     }
+    return gson.toJson(response);
   }
 
-  public static PlayResponse startGame(int playerId, Table table) throws PlayException {
+  public static PlayResponse getHand(int playerId, Table table) throws PlayException {
     return new PlayResponse(Action.GET_STATE, playerId, table.getHints(),
         table.getLives(), getVisibleHand(playerId, table), table.getTurn());
   }
@@ -48,7 +63,34 @@ public class PlayRequest {
     return response;
   }
 
-  public static PlayResponse playCard(int playerId, Card cardPlayed, Table table) throws PlayException {
+  public static PlayResponse giveHint(Table table, int playerId, String hintColor, String hintNumber)
+      throws PlayException {
+    if (Strings.isNullOrEmpty(hintColor) && Strings.isNullOrEmpty(hintNumber)) {
+      throw new PlayException(ErrorResponse.INVALID_REQUEST);
+    }
+//    for (int cardRef = 0; cardRef < Hand.MAX_HAND; cardRef++) {
+//      Card card = table.getHand(playerId).getCard(cardRef);
+//      if (!Strings.isNullOrEmpty(hintColor) && card.getCardColor().equals(Card.getCardColor(hintColor))) {
+//
+//      } else if (!Strings.isNullOrEmpty(hintNumber) && card.getValue() == Integer.parseInt(hintNumber)) {
+//
+//      }
+//
+//    }
+    return null;
+  }
+
+  public static PlayResponse playCard(int playerId, int cardId, Table table) throws PlayException {
+    Card cardPlayed = null;
+    for (int cardRef = 0; cardRef < Hand.MAX_HAND; cardRef++) {
+      if (table.getHand(playerId).getCard(cardRef).getCardId() == cardId) {
+        cardPlayed = table.getHand(playerId).getCard(cardRef);
+        break;
+      }
+    }
+    if (cardPlayed == null) {
+      throw new PlayException(ErrorResponse.INVALID_REQUEST);
+    }
     if (!table.getTable().containsKey(cardPlayed.getCardColor())) {
       if (cardPlayed.getValue() == 1) {
         table.insertCard(cardPlayed, playerId);
@@ -64,18 +106,25 @@ public class PlayRequest {
         table.incrementHints();
       }
     }
-    table.incrementTurn();
+    table.advanceTurn();
     return new PlayResponse(Action.PLAY, playerId, table.getHints(), table.getLives(), getVisibleHand(playerId, table),
         table.getTurn());
   }
 
-  public static PlayResponse discardCard(int playerId, Card cardPlayed, Table table) throws PlayException {
-    if (!table.getHands()[playerId].replace(cardPlayed, table.getDeck())) {
+  public static PlayResponse discardCard(int playerId, int cardId, Table table) throws PlayException {
+    Card cardPlayed = null;
+    for (int cardRef = 0; cardRef < Hand.MAX_HAND; cardRef++) {
+      if (table.getHand(playerId).getCard(cardRef).getCardId() == cardId) {
+        cardPlayed = table.getHand(playerId).getCard(cardRef);
+        break;
+      }
+    }
+    if (!table.getHand(playerId).replace(cardPlayed, table.getDeck())) {
       throw new PlayException(ErrorResponse.INVALID_MOVE);
     } else if (table.getHints() < GameConfigurable.MAX_HINT) {
       table.incrementHints();
     }
-    table.incrementTurn();
+    table.advanceTurn();
     return new PlayResponse(Action.DISCARD,  playerId, table.getHints(), table.getLives(),
         getVisibleHand(playerId, table), table.getTurn());
   }
@@ -93,14 +142,14 @@ public class PlayRequest {
   }
 
   private static Hand[] getVisibleHand(int playerId, Table table) {
-    Hand[] visbleHand = new Hand[GameConfigurable.MAX_PLAYERS-1];
+    Hand[] visibleHand = new Hand[GameConfigurable.MAX_PLAYERS-1];
     int currentIndex = 0;
     for (int playerRef = 0; playerRef < GameConfigurable.MAX_PLAYERS; playerRef++) {
       if (playerRef != playerId) {
-        visbleHand[currentIndex] = table.getHands()[playerRef];
+        visibleHand[currentIndex] = table.getHand(playerRef);
         currentIndex++;
       }
     }
-    return visbleHand;
+    return visibleHand;
   }
 }

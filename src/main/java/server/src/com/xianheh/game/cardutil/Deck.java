@@ -23,18 +23,11 @@ public class Deck {
     for (int duplicateRef = 0; duplicateRef < 2; duplicateRef ++) {
       for (int cardValueRef = 1; cardValueRef <= 5; cardValueRef++) {
         for (int cardColorRef = 0; cardColorRef < Card.CardColor.values().length; cardColorRef++) {
-          Card card = new Card(cardValueRef, Card.CardColor.values()[cardColorRef],
-              calculateId(duplicateRef, (cardValueRef - 1), cardColorRef));
-          LOGGER.info("card id" + card.getCardId());
+          Card card = new Card(cardValueRef, Card.CardColor.values()[cardColorRef]);
           deck.add(card);
         }
       }
     }
-  }
-
-  public int calculateId(int duplicateRef, int cardValueRef, int cardColorRef) {
-    return (duplicateRef *  5 * Card.CardColor.values().length) + ((cardValueRef *
-        Card.CardColor.values().length) + cardColorRef);
   }
 
   public Card randomizedDraw () {
@@ -44,12 +37,17 @@ public class Deck {
     }
     int randomCardIndex = rand.nextInt(deck.size());
     Card card = deck.get(randomCardIndex);
+    card.setCardId(deck.size()-1);
     deck.remove(randomCardIndex);
     return card;
   }
 
-  public int getDeckSize() {
+  public int getSize() {
     return deck.size();
+  }
+
+  public List<Card> getDeck() {
+    return this.deck;
   }
 
   public void printDeck () {

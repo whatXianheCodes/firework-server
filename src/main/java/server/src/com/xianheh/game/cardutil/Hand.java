@@ -9,7 +9,7 @@ import java.util.logging.Logger;
  */
 public class Hand {
 
-  private static final int MAX_HAND = 4;
+  public static final int MAX_HAND = 4;
   private static Logger LOGGER = Logger.getLogger(Hand.class.getName());
 
   private Card[] hand;

@@ -9,4 +9,6 @@ public class Action {
   public final static String GET_HAND = "GET_HAND";
   public final static String PLAY = "PLAY";
   public final static String DISCARD = "DISCARD";
+  public final static String GIVE_HINT = "GIVE_HINT";
+  public final static String GET_MOVE_SINCE = "GET_MOVE_SINCE";
 }

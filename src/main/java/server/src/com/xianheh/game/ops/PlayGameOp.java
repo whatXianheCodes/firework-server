@@ -31,18 +31,18 @@ public class PlayGameOp extends HttpServlet {
 
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
       IOException {
-    PlayResponse responseMessage;
+    String responseMessage = null;
     try {
       responseMessage = processRequest(request);
     } catch (PlayException e) {
-      responseMessage = new PlayResponse(false, e.getMessage());
-      sendError(response, responseMessage);
+      PlayResponse errorPlayResponse = new PlayResponse(false, e.getMessage());
+      sendError(response, errorPlayResponse);
     }
     sendSuccess(response, responseMessage);
     table.advanceTurn();
   }
 
-  private PlayResponse processRequest(HttpServletRequest request) throws IOException, ServletException, PlayException {
+  private String processRequest(HttpServletRequest request) throws IOException, ServletException, PlayException {
     StringBuffer requestStringBuilder = new StringBuffer();
     String line;
     BufferedReader reader = request.getReader();
@@ -52,9 +52,8 @@ public class PlayGameOp extends HttpServlet {
     return PlayRequest.parseJSONMessage(requestStringBuilder.toString(), table);
   }
 
-  private void sendSuccess(HttpServletResponse response, PlayResponse responseMessage) throws IOException {
-    Gson gson = new Gson();
-    response.getWriter().write(gson.toJson(responseMessage));
+  private void sendSuccess(HttpServletResponse response, String responseMessage) throws IOException {
+    response.getWriter().write(responseMessage);
       response.setStatus(response.SC_OK);
   }
 

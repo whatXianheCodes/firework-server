@@ -19,6 +19,10 @@ public class PlayResponse {
   private int livesLeft;
   private Hand[] hands;
   private int turn;
+  @SerializedName("hint_colors")
+  private String[] hintColors;
+  @SerializedName("hint_numbers")
+  private String[] hintNumbers;
 
   public PlayResponse(String action, int playerId, int hintsLeft, int livesLeft,
       Hand[] hands, int turn) {
@@ -99,5 +103,21 @@ public class PlayResponse {
 
   public void setTurn(int turn) {
     this.turn = turn;
+  }
+
+  public String[] getHintColors() {
+    return hintColors;
+  }
+
+  public void setHintColors(String[] hintColors) {
+    this.hintColors = hintColors;
+  }
+
+  public String[] getHintNumbers() {
+    return hintNumbers;
+  }
+
+  public void setHintNumbers(String[] hintNumbers) {
+    this.hintNumbers = hintNumbers;
   }
 }

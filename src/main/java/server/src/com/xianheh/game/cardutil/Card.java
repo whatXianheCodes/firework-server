@@ -34,15 +34,13 @@ public class Card {
     WHITE
   }
 
-  public static CardColor setCardColor(String cardColor) {
+  public static CardColor getCardColor(String cardColor) {
     return cardColorToRaw.inverse().get(cardColor);
   }
 
-  public Card (int value, CardColor cardColor, int cardId) {
-    Preconditions.checkArgument(cardId < DECK_SIZE);
+  public Card (int value, CardColor cardColor) {
     this.value = value;
     this.cardColor = cardColor;
-    this.cardId = cardId;
   }
 
   public int getValue () {
@@ -51,6 +49,11 @@ public class Card {
 
   public CardColor getCardColor() {
     return this.cardColor;
+  }
+
+  public void setCardId(int cardId) {
+    Preconditions.checkArgument(cardId < DECK_SIZE);
+    this.cardId = cardId;
   }
 
   public int getCardId() {

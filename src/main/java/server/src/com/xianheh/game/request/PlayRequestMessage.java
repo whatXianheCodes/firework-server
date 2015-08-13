@@ -1,7 +1,6 @@
 package com.xianheh.game.request;
 
 import com.google.gson.annotations.SerializedName;
-import com.xianheh.game.cardutil.Card;
 
 /**
  * @author xianhehuang@gmail.com
@@ -16,8 +15,9 @@ public class PlayRequestMessage {
   private String hintNumber;
   @SerializedName("hint_player_id")
   private String hintPlayerId;
-  @SerializedName("card")
-  private Card cardPlayed;
+  @SerializedName("card_id")
+  private int cardPlayed;
+  private String move;
 
   public String getPlayerId() {
     return playerId;
@@ -51,19 +51,27 @@ public class PlayRequestMessage {
     this.hintPlayerId = hintPlayerId;
   }
 
-  public Card getCardPlayed() {
-    return cardPlayed;
-  }
-
-  public void setCardPlayed(Card cardPlayed) {
-    this.cardPlayed = cardPlayed;
-  }
-
   public String getAction() {
     return action;
   }
 
   public void setAction(String action) {
     this.action = action;
+  }
+
+  public String getMove() {
+    return move;
+  }
+
+  public void setMove(String move) {
+    this.move = move;
+  }
+
+  public int getCardPlayed() {
+    return cardPlayed;
+  }
+
+  public void setCardPlayed(int cardPlayed) {
+    this.cardPlayed = cardPlayed;
   }
 }
