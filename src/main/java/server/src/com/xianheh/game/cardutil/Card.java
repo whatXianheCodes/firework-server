@@ -61,6 +61,6 @@ public class Card {
   }
 
   public static boolean isCardPlayable(Card cardPlayed, Table table) {
-    return cardPlayed.getValue() - table.getCard(cardPlayed.getCardColor()).getValue() == 1;
+    return cardPlayed.getValue() - table.getCardValue(cardPlayed.getCardColor()) == 1;
   }
 }

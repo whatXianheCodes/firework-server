@@ -1,4 +1,4 @@
 .idea
+/target
+fireworks.iml
 .openshift
-target
-*.iml

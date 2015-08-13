@@ -35,7 +35,7 @@ public class Table {
   public Table () {
     turn = 0;
     turnsLeft = GameConfigurable.MAX_PLAYERS;
-    lives = 3;
+    lives = GameConfigurable.MAX_LIVES;
     hints = GameConfigurable.MAX_HINT;
     playerID = 0;
     deck = new Deck();
@@ -54,7 +54,7 @@ public class Table {
     return hands[playerId];
   }
 
-  public Map<Card.CardColor, Card> getTable() {
+  public Map<CardColor, Card> getTable() {
     return table;
   }
 
@@ -71,10 +71,6 @@ public class Table {
 
   public int getCardValue(CardColor cardColor){
     return table.get(cardColor).getValue();
-  }
-
-  public Card getCard(Card.CardColor cardColor) {
-    return table.get(cardColor);
   }
 
   public int getLives() {
@@ -103,6 +99,10 @@ public class Table {
 
   public int getTurn() {
     return turn;
+  }
+
+  public int getTurnsLeft() {
+    return turnsLeft;
   }
 
   public void addMove(PlayRequestMessage playRequestMessage) {

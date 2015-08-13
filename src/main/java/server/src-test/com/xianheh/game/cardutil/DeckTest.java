@@ -81,4 +81,16 @@ public class DeckTest {
     Assert.assertEquals(0, fourValue);
     Assert.assertEquals(0, fiveValue);
   }
+
+  @Test
+  public void testNewDeck() {
+    Deck deck = new Deck();
+    Assert.assertEquals(50, deck.getSize());
+    for (int i = 0; i < 50; i++) {
+      deck.randomizedDraw();
+    }
+    Assert.assertEquals(0, deck.getSize());
+    deck.newDeck();
+    Assert.assertEquals(50, deck.getSize());
+  }
 }

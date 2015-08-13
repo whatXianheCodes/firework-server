@@ -46,10 +46,6 @@ public class Deck {
     return deck.size();
   }
 
-  public List<Card> getDeck() {
-    return this.deck;
-  }
-
   public void printDeck () {
     LOGGER.info("Card deck has the size of " + deck.size());
     for (Card card : deck) {
